@@ -61,8 +61,16 @@ def init_linear_layer(key, in_dim, out_dim, scale=0.1):
     # TODO: sample W from a scaled normal and set b to zeros, return as a dict.
     return {'W': scale * sample_normal_matrix(key,(in_dim,out_dim)), 'b': jnp.zeros(out_dim,)}
 
-# Step 8 - init_mlp_params (not yet solved)
-# TODO: implement
+# Step 8 - init_mlp_params
+def init_mlp_params(key, layer_sizes, scale=0.1):
+    # TODO: build a list of per-layer parameter dicts from adjacent layer sizes.
+    res = []
+    for (in_dim, out_dim) in  zip(layer_sizes[:-1],layer_sizes[1:]) :
+        layer_key,key = split_prng_key(key,2)
+        l = init_linear_layer(layer_key,in_dim,out_dim,scale)
+        res.append(l)
+    
+    return res
 
 # Step 9 - linear_forward (not yet solved)
 # TODO: implement
