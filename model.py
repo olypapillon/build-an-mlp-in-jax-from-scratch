@@ -97,8 +97,14 @@ def softmax_probabilities(logits):
 
     return softmax
 
-# Step 12 - mlp_forward (not yet solved)
-# TODO: implement
+# Step 12 - mlp_forward
+def mlp_forward(params, x):
+    # TODO: run x through all hidden layers with ReLU, then a final linear layer, returning logits.
+    for p in params[:-1]:
+        x = linear_forward(x,p)
+        x = relu_activation(x)
+    
+    return linear_forward(x,params[-1])
 
 # Step 13 - log_softmax_logits (not yet solved)
 # TODO: implement
