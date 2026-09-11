@@ -63,13 +63,14 @@ def init_linear_layer(key, in_dim, out_dim, scale=0.1):
 
 # Step 8 - init_mlp_params
 def init_mlp_params(key, layer_sizes, scale=0.1):
-    # TODO: build a list of per-layer parameter dicts from adjacent layer sizes.
+    """Build a list of per-layer parameter dicts from adjacent layer sizes."""
+    keys = split_prng_key(key, len(layer_sizes) - 1)
     res = []
-    for (in_dim, out_dim) in  zip(layer_sizes[:-1],layer_sizes[1:]) :
-        layer_key,key = split_prng_key(key,2)
-        l = init_linear_layer(layer_key,in_dim,out_dim,scale)
+    for k, (in_dim, out_dim) in zip(
+        keys, zip(layer_sizes[:-1], layer_sizes[1:])
+    ):
+        l = init_linear_layer(k, in_dim, out_dim, scale)
         res.append(l)
-    
     return res
 
 # Step 9 - linear_forward
@@ -137,7 +138,6 @@ import jax.numpy as jnp
 def loss_fn_of_params(params, x, one_hot_targets):
     # TODO: return scalar cross-entropy loss as a function of params, ready for jax.grad
     logits = mlp_forward(params,x)
-    print(cross_entropy_loss(logits,one_hot_targets))
 
     return cross_entropy_loss(logits,one_hot_targets)
 
