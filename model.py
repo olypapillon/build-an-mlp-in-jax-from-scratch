@@ -171,9 +171,9 @@ def training_step(params, x, one_hot_targets, learning_rate):
     # TODO: compute current loss + grads via the upstream helpers, then SGD-update params.
     loss= loss_fn_of_params(params,x,one_hot_targets)
     grads = compute_param_grads(params,x,one_hot_targets)
-    sgd = sgd_update_params(params,grads,learning_rate)
+    params = sgd_update_params(params,grads,learning_rate)
 
-    return sgd, loss
+    return params, loss
 
 # Step 20 - train_mlp
 def train_mlp(params, x, one_hot_targets, learning_rate, num_epochs):
@@ -183,6 +183,10 @@ def train_mlp(params, x, one_hot_targets, learning_rate, num_epochs):
         params, loss = training_step(params, x, one_hot_targets, learning_rate)
     return params
 
-# Step 21 - predict_classes (not yet solved)
-# TODO: implement
+# Step 21 - predict_classes
+def predict_classes(params, x):
+    # TODO: run mlp_forward on x and return the argmax class index per row
+    logits = mlp_forward(params, x)
+
+    return jnp.argmax(logits,axis=-1)
 
